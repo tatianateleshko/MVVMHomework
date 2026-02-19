@@ -27,7 +27,7 @@ namespace UI
 
         public Observable<IPlayerStatsViewModel> StatRemoved => _statRemoved;
 
-        public Observable<Sprite> OnPlayerImageChange => _nameChanged;
+        public Observable<Sprite> OnPlayerImageChange => _iconChanged;
 
         public Observable<string> OnPlayerNameChange => _nameChanged;
 
