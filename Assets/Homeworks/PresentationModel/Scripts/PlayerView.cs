@@ -57,10 +57,18 @@ namespace UI.ViewComponents
 
             _viewModel = productViewModel;
 
-            _playerName.text = _viewModel.Name;
-            _description.text = _viewModel.Description;
-            _icon.sprite = _viewModel.PlayerIcon;
-           
+            _viewModel.Name
+                .Subscribe(x => { _playerName.text = x; })
+                .AddTo(_disposable);
+
+            _viewModel.Description
+                .Subscribe(x => { _description.text = x; })
+                .AddTo(_disposable);
+
+            _viewModel.PlayerIcon.
+                Subscribe(x => { _icon.sprite = x; })
+                .AddTo(_disposable);
+
             _viewModel.Level
                 .Subscribe(x => { _playerLevel.text = x; })
                 .AddTo(_disposable);

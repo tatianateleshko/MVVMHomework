@@ -1,43 +1,34 @@
 using System;
+using R3;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Lessons.Architecture.PM
+namespace UI
 {
     public sealed class UserInfo
     {
-        public event Action<string> OnNameChanged;
-        public event Action<string> OnDescriptionChanged;
-        public event Action<Sprite> OnIconChanged; 
+        public ReadOnlyReactiveProperty<string> CurrentName => _name;
+        private ReactiveProperty<string> _name = new();
 
-        [ShowInInspector, ReadOnly]
-        public string Name { get; private set; }
+        public ReadOnlyReactiveProperty<string> Description => _description;
+        private ReactiveProperty<string> _description = new();
 
-        [ShowInInspector, ReadOnly]
-        public string Description { get; private set; }
+        public ReadOnlyReactiveProperty<Sprite> Icon => _icon;
+        private ReactiveProperty<Sprite> _icon = new();
 
-        [ShowInInspector, ReadOnly]
-        public Sprite Icon { get; private set; }
-
-        [Button]
         public void ChangeName(string name)
         {
-            this.Name = name;
-            this.OnNameChanged?.Invoke(name);
+            _name.Value = name;
         }
 
-        [Button]
         public void ChangeDescription(string description)
         {
-            this.Description = description;
-            this.OnDescriptionChanged?.Invoke(description);
+            _description.Value = description;
         }
 
-        [Button]
         public void ChangeIcon(Sprite icon)
         {
-            this.Icon = icon;
-            this.OnIconChanged?.Invoke(icon);
+           _icon.Value = icon;
         }
     }
 }

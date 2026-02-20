@@ -1,47 +1,38 @@
 using System;
-using Sirenix.OdinInspector;
+using R3;
 
-namespace Lessons.Architecture.PM
+namespace Player
 {
     public sealed class PlayerLevel
     {
-        public event Action OnLevelUp;
-        public event Action<int> OnExperienceChanged;
+        public ReadOnlyReactiveProperty<int> CurrentLevel => _currentLevel;
+        public ReadOnlyReactiveProperty<int>  CurrentExperience => _currentExperience;
+        public ReadOnlyReactiveProperty<bool> CanLevelUp => _canLevelUp;
 
-        [ShowInInspector, ReadOnly]
-        public int CurrentLevel { get; private set; } = 1;
+        private ReactiveProperty<int> _currentLevel = new (1);
+        private ReactiveProperty<int> _currentExperience = new();
 
-        [ShowInInspector, ReadOnly]
-        public int CurrentExperience { get; private set; }
+        private ReactiveProperty<bool> _canLevelUp = new(false);
 
-        [ShowInInspector, ReadOnly]
         public int RequiredExperience
         {
-            get { return 100 * (this.CurrentLevel + 1); }
+            get { return 100 * (_currentLevel.Value + 1); }
         }
 
-        [Button]
         public void AddExperience(int range)
         {
-            var xp = Math.Min(this.CurrentExperience + range, this.RequiredExperience);
-            this.CurrentExperience = xp;
-            this.OnExperienceChanged?.Invoke(xp);
+            var xp = Math.Min(_currentExperience.Value + range, this.RequiredExperience);
+            _currentExperience.Value = xp;
+            _canLevelUp.Value = _currentExperience.Value == this.RequiredExperience;
         }
 
-        [Button]
         public void LevelUp()
         {
-            if (this.CanLevelUp())
+            if (_canLevelUp.Value)
             {
-                this.CurrentExperience = 0;
-                this.CurrentLevel++;
-                this.OnLevelUp?.Invoke();
+                _currentExperience.Value = 0;
+                _currentLevel.Value++;
             }
-        }
-
-        public bool CanLevelUp()
-        {
-            return this.CurrentExperience == this.RequiredExperience;
         }
     }
 }

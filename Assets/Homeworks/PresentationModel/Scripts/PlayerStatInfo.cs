@@ -17,10 +17,11 @@ namespace Player
 
         public readonly HashSet<PlayerStat> stats = new();
 
+        private int maxStatNumber = 6;
         public void AddStat(StatsType statsType, int value)
         {
             PlayerStat playerStat = new PlayerStat(statsType.GetLocName(), value);
-            if (this.stats.Add(playerStat))
+            if (this.stats.Add(playerStat) && stats.Count <= maxStatNumber)
             {
                 this.OnStatAdded?.Execute(playerStat);
             }
@@ -34,17 +35,17 @@ namespace Player
             }
         }
 
-        public PlayerStat GetStat(string name)
+        public PlayerStat GetStat(StatsType type)
         {
             foreach (var stat in this.stats)
             {
-                if (stat.Name == name)
+                if (stat.Name == type.GetLocName())
                 {
                     return stat;
                 }
             }
 
-            throw new Exception($"Stat {name} is not found!");
+            throw new Exception($"Stat {type.GetLocName()} is not found!");
         }
 
         public PlayerStat[] GetStats()

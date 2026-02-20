@@ -6,9 +6,9 @@ namespace Factory
 {
     public class ViewModelFactory
     {
-        public PlayerViewModel Create(PlayerData playerData, PlayerLevel playerLevel, PlayerStatInfo playerStatInfo, ViewModelFactory viewModelFactory)
+        public PlayerViewModel Create(PlayerLevel playerLevel, PlayerStatInfo playerStatInfo, ViewModelFactory viewModelFactory, UserInfo userInfo)
         {
-            return new PlayerViewModel(playerData, playerLevel, playerStatInfo, viewModelFactory);
+            return new PlayerViewModel(playerLevel, playerStatInfo, viewModelFactory, userInfo );
         }
 
         public PlayerStatsViewModel Create(PlayerStat playerStat)

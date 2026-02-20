@@ -12,14 +12,9 @@ namespace UI
 {
     public class PlayerViewModel : IPlayerViewModel
     {
-        public Sprite PlayerIcon { get; }
-
-        public string Name { get; }
-        public string Description { get; }
         public ReadOnlyReactiveProperty<string> Level => _level;
         public ReadOnlyReactiveProperty<string> Experience => _experience;
         public IReadOnlyList<IPlayerStatsViewModel> PlayerStatsViewModels => _viewModels;
-
 
         public ReadOnlyReactiveProperty<bool> CanLevelUp => _canLevelUp;
 
@@ -27,39 +22,37 @@ namespace UI
 
         public Observable<IPlayerStatsViewModel> StatRemoved => _statRemoved;
 
-        public Observable<Sprite> OnPlayerImageChange => _iconChanged;
+        public ReadOnlyReactiveProperty<Sprite> PlayerIcon => _playerIcon;
 
-        public Observable<string> OnPlayerNameChange => _nameChanged;
+        public ReadOnlyReactiveProperty<string> Name => _name;
+
+        public ReadOnlyReactiveProperty<string> Description => _description;
 
         private readonly ReactiveProperty<bool> _canLevelUp = new();
         private readonly ReactiveProperty <string> _level = new();
         private readonly ReactiveProperty <string> _experience = new();
-        private List<IPlayerStatsViewModel> _viewModels;
+        private readonly ReactiveProperty<Sprite> _playerIcon = new();
+        private readonly ReactiveProperty<string> _description = new();
+        private readonly ReactiveProperty<string> _name = new();
+        private List<IPlayerStatsViewModel> _viewModels = new List<IPlayerStatsViewModel>();
         private readonly Subject<IPlayerStatsViewModel> _statAdded = new();
         private readonly Subject<IPlayerStatsViewModel> _statRemoved = new();
-        private readonly Subject<string> _nameChanged = new();
-        private readonly Subject<Sprite> _iconChanged = new();
 
 
-        private readonly PlayerData _playerData;
         private readonly PlayerLevel _playerLevel;
         private readonly PlayerStatInfo _playerStatInfo;
         private readonly ViewModelFactory _viewModelsFactory;
-        private readonly UserInfo _playerStatsViewModel;
+        private readonly UserInfo _userUnfo;
 
         private readonly CompositeDisposable _disposable = new();
 
      
-        public PlayerViewModel(PlayerData playerData, PlayerLevel playerLevel, PlayerStatInfo playerStatInfo, ViewModelFactory viewModelFactory)
+        public PlayerViewModel(PlayerLevel playerLevel, PlayerStatInfo playerStatInfo, ViewModelFactory viewModelFactory, UserInfo userInfo)
         {
-            _playerData = playerData;
             _playerLevel = playerLevel;
             _playerStatInfo = playerStatInfo;
             _viewModelsFactory = viewModelFactory;
-
-            PlayerIcon = _playerData.PlayerIcon;
-            Name = _playerData.PlayerName;
-            Description = _playerData.Description;
+            _userUnfo = userInfo;   
 
             _playerLevel.CurrentLevel.Subscribe(SetLevelValue)
                 .AddTo(_disposable);
@@ -71,12 +64,7 @@ namespace UI
                 .Subscribe(UpdateCanLevelUp)
                 .AddTo(_disposable);
 
-            _viewModels = new List<IPlayerStatsViewModel>(playerStatInfo.stats.Count);
-            foreach (var stat in playerStatInfo.stats)
-            {
-              AddStat(stat);
-            }
-
+     
             _playerStatInfo.OnStatAdded
                .Subscribe(AddStat)
                .AddTo(_disposable);
@@ -84,6 +72,33 @@ namespace UI
             _playerStatInfo.OnStatRemoved
                 .Subscribe(RemoveStat)
                 .AddTo(_disposable);
+
+            _userUnfo.CurrentName
+                .Subscribe(SetName)
+                .AddTo(_disposable);
+
+            _userUnfo.Description
+                .Subscribe(SetDescription)
+                .AddTo(_disposable);
+
+            _userUnfo.Icon
+                .Subscribe(SetIcon)
+                .AddTo(_disposable);
+        }
+
+        private void SetDescription(string description)
+        {
+            _description.Value = description;
+        }
+
+        private void SetIcon(Sprite icon)
+        {
+            _playerIcon.Value = icon;   
+        }
+
+        private void SetName(string name)
+        {
+            _name.Value = name;
         }
 
         private void SetLevelValue(int level)
@@ -120,13 +135,6 @@ namespace UI
             _viewModels.Remove(viewModel);
             _statRemoved.OnNext(viewModel);
         }
-
-        public void ChangeName()
-        {
-            
-
-        }
-
 
         public void Dispose()
         {
