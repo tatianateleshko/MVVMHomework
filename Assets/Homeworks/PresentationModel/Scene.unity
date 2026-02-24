@@ -529,6 +529,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerView: {fileID: 4774131020417751147}
+  _statsView: {fileID: 4774131020417751150}
+  _levelView: {fileID: 4774131020417751151}
 --- !u!114 &1588635574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -888,6 +890,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7517be7626e1e4445926b3fe1b46bd5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4774131020417751150 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 278680902259073899, guid: f02ecb6580570b046a88c4a1c8345a4f, type: 3}
+  m_PrefabInstance: {fileID: 4774131020417751145}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1349104eab6a75c4a851742186539466, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStatsView
+--- !u!114 &4774131020417751151 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6199874655343609596, guid: f02ecb6580570b046a88c4a1c8345a4f, type: 3}
+  m_PrefabInstance: {fileID: 4774131020417751145}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe3cf06876bc2f64eadcc57a493e27a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI.PlayerLevelView
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -9,12 +9,12 @@ namespace UI.ViewComponents
         [SerializeField] private TextMeshProUGUI _statName;
         [SerializeField] private TextMeshProUGUI _statValue;
 
-        private IPlayerStatsViewModel _viewModel;
+        private IPlayerStatViewModel _viewModel;
 
-        public IPlayerStatsViewModel ViewModel => _viewModel; 
+        public IPlayerStatViewModel ViewModel => _viewModel; 
         
         private CompositeDisposable _disposable =  new();
-        public void Initialize(IPlayerStatsViewModel playerStatsViewModel)
+        public void Initialize(IPlayerStatViewModel playerStatsViewModel)
         {
             _viewModel = playerStatsViewModel;
             _statName.text = playerStatsViewModel.Name;
@@ -27,7 +27,7 @@ namespace UI.ViewComponents
 
         private void OnDestroy()
         {
-            _disposable?.Dispose();
+            _disposable.Dispose();
         }
     }
 }

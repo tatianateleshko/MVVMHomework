@@ -1,13 +1,13 @@
 using R3;
-using System;
+using System.Collections.Generic;
 
 namespace UI
 {
-    public interface IPlayerStatsViewModel : IViewModel , IDisposable
+    public interface IPlayerStatsViewModel : IViewModel
     {
-        string Name { get; }
-        ReadOnlyReactiveProperty<string> StatValue { get; }
+        IReadOnlyList<IPlayerStatViewModel> PlayerStatsViewModels { get; }
+        Observable<IPlayerStatViewModel> StatAdded { get; }
+        Observable<IPlayerStatViewModel> StatRemoved { get; }
     }
-
 }
 

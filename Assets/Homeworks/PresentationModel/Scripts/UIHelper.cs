@@ -10,7 +10,8 @@ namespace UI.Helpers
     public class UIHelper : MonoBehaviour
     {
         [SerializeField] private PlayerView  _playerView;
- 
+        [SerializeField] private PlayerStatsView _statsView;
+        [SerializeField] private PlayerLevelView _levelView;
         private ViewModelFactory _playerViewModelFactory;
         private PlayerLevel _playerLevel;
         private PlayerStatInfo _playerStatInfo;
@@ -31,7 +32,9 @@ namespace UI.Helpers
         [Button]
         public void ShowPlayerView()
         {
-            _playerView.Show(_playerViewModelFactory.Create(_playerLevel, _playerStatInfo, _viewModelFactory, _userInfo));
+            _playerView.Show(_playerViewModelFactory.Create(_userInfo));
+            _statsView.Show(_playerViewModelFactory.Create(_playerStatInfo, _viewModelFactory));
+            _levelView.Show(_playerViewModelFactory.Create(_playerLevel));
         }
     }
 

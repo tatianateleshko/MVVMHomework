@@ -1,41 +1,61 @@
-using JetBrains.Annotations;
+using Factory;
 using Player;
 using R3;
-using UI;
-using UnityEngine;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace UI
 {
-    public class PlayerStatsViewModel : IPlayerStatsViewModel
+    public class PlayerStatsViewModel : IPlayerStatsViewModel, IDisposable
     {
-        public string Name { get; }
 
-        public ReadOnlyReactiveProperty<string> StatValue => _statValue;
-        private readonly ReactiveProperty<string> _statValue = new();
+        private List<IPlayerStatViewModel> _viewModels = new List<IPlayerStatViewModel>();
+        private readonly Subject<IPlayerStatViewModel> _statAdded = new();
+        private readonly Subject<IPlayerStatViewModel> _statRemoved = new();
 
-        private readonly PlayerStat _playerStat;
+        public IReadOnlyList<IPlayerStatViewModel> PlayerStatsViewModels => _viewModels;
 
-        private CompositeDisposable _disposables = new CompositeDisposable();
+        public Observable<IPlayerStatViewModel> StatAdded => _statAdded;
 
+        public Observable<IPlayerStatViewModel> StatRemoved => _statRemoved;
 
-        public PlayerStatsViewModel(PlayerStat stat) 
-        {   
-            _playerStat = stat;
-            Name = _playerStat.Name;
+        private readonly PlayerStatInfo _playerStatInfo;
+        private readonly ViewModelFactory _viewModelsFactory;
 
-           _playerStat.Value.Subscribe(SetStatValue).AddTo(_disposables);      
+        private CompositeDisposable _disposable = new();
+
+        public PlayerStatsViewModel(PlayerStatInfo playerStatInfo, ViewModelFactory viewModelFactory)
+        {
+            _playerStatInfo = playerStatInfo;
+            _viewModelsFactory = viewModelFactory;
+
+            _playerStatInfo.OnStatAdded
+                .Subscribe(AddStat)
+                .AddTo(_disposable);
+
+           _playerStatInfo.OnStatRemoved
+                .Subscribe(RemoveStat)
+                .AddTo(_disposable);
+        }
+        public void AddStat(PlayerStat playerStat)
+        {
+            var viewModel = _viewModelsFactory.Create(playerStat);
+            _viewModels.Add(viewModel);
+            _statAdded.OnNext(viewModel);
         }
 
-        private void SetStatValue(int statValue)
+        public void RemoveStat(PlayerStat playerStat)
         {
-            _statValue.Value = $"{":" + statValue.ToString()}";
+            var viewModel = _viewModels.FirstOrDefault();
+            if (viewModel == null) return;
+            _viewModels.Remove(viewModel);
+            _statRemoved.OnNext(viewModel);
         }
 
         public void Dispose()
         {
-            _disposables.Dispose();
+            _disposable.Dispose();
         }
     }
-
 }
-

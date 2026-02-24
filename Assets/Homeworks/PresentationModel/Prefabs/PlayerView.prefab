@@ -643,6 +643,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4281498524129779611}
   - component: {fileID: -7459231821307849695}
+  - component: {fileID: 278680902259073899}
+  - component: {fileID: 6199874655343609596}
   m_Layer: 5
   m_Name: PlayerView
   m_TagString: Untagged
@@ -688,13 +690,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerName: {fileID: 854709737837582434}
   _description: {fileID: 3725164780077682349}
-  _exp: {fileID: 1015449513713395241}
   _icon: {fileID: 3559254899601504352}
-  _levelUpButton: {fileID: 6720113815339615884}
-  _playerLevel: {fileID: 3342336192017401359}
   _closeButton: {fileID: 3340587299956781317}
+--- !u!114 &278680902259073899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2561717807169163860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1349104eab6a75c4a851742186539466, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStatsView
   _playerStatView: {fileID: 2000501740909927665, guid: e289a2fddc85ebb43adac468aa9ac637, type: 3}
   _playerStatContainer: {fileID: 9074077898358601942}
+--- !u!114 &6199874655343609596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2561717807169163860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe3cf06876bc2f64eadcc57a493e27a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI.PlayerLevelView
+  _levelUpButton: {fileID: 6720113815339615884}
+  _playerLevel: {fileID: 3342336192017401359}
+  _exp: {fileID: 1015449513713395241}
 --- !u!1 &2963575130159331540
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Common.Enums;
 using R3;
-using Sirenix.OdinInspector;
 using UI.Utils;
-using Zenject;
 
 
 namespace Player
